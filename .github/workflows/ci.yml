@@ -4,22 +4,18 @@ on: [push]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-    strategy:
-      max-parallel: 1
-      matrix:
-        python-version: [3.7]
 
     steps:
-    - uses: actions/checkout@v1
-    - name: Get Cmake version
-      run: |
-        cmake --version
+    - uses: actions/checkout@v2
+
     - name: Update submodules
       run: |
         git submodule init
         git submodule update
+    - name: Get Cmake version
+      run: |
+        cmake --version
     - name: Install dependencies
       run: |
         sudo apt-get install libjansson-dev
@@ -33,9 +29,6 @@ jobs:
         sudo apt-get install swig3.0
         sudo apt-get install doxygen
         sudo apt-get install graphviz
-    - name: Install Python dependencies with pip
-      run: |
-        pip3 install numpy
     - name: configure
       run: |
         mkdir build
