@@ -234,11 +234,18 @@ if(WITH_PYTHON)
       find_package(Numpy REQUIRED)
     else()
       message("*** cmake >= 3.14")
-      #find_package(Python3 REQUIRED COMPONENTS Interpreter Development NumPy)
+      find_package(Python3 REQUIRED COMPONENTS Interpreter Development NumPy)
+    endif()
 
-      find_package(Python3 REQUIRED COMPONENTS Interpreter Development)
-      set(PYTHON_EXECUTABLE ${Python3_EXECUTABLE})
-      find_package(Numpy REQUIRED)
+    message("*** Python3_NumPy_INCLUDE_DIR: ${Python3_NumPy_INCLUDE_DIR}")
+
+    # Numpy seems not to be detected on Ubuntu in Github Actions
+    if(NOT Python3_NumPy_INCLUDE_DIR)
+      execute_process(
+        COMMAND ${PYTHON_EXECUTABLE}
+          -c "import numpy as np; print(np.get_include())"
+        OUTPUT_VARIABLE Python3_NumPy_INCLUDE_DIR
+        )
     endif()
 
     message("*** Python3_EXECUTABLE: ${Python3_EXECUTABLE}")
@@ -268,8 +275,9 @@ if(WITH_PYTHON)
 
     set(PYTHONLIBS_FOUND      ${Python3_Development_FOUND})
     set(PYTHON_LIBRARIES      ${Python3_LIBRARIES})
-    set(PYTHON_INCLUDE_DIRS   ${Python3_INCLUDE_DIRS})
     set(PYTHON_LIBRARY_DIRS   ${Python3_LIBRARY_DIRS})
+    set(PYTHON_INCLUDE_DIRS   ${Python3_INCLUDE_DIRS})
+    set(NUMPY_INCLUDE_DIRS    ${Python3_NumPy_INCLUDE_DIRS})
     set(PYTHONLIBS_VERSION_STRING ${Python3_VERSION})
   endif()
 endif()
@@ -462,9 +470,10 @@ message("export DLITE_TEMPLATE_DIRS=${dlite_TEMPLATES}")
 message("export DLITE_STORAGES='${dlite_STORAGES}'")
 message("")
 message("========== Python ==================")
-message("PYTHON_INCLUDE_DIRS:  ${PYTHON_INCLUDE_DIRS}")
 message("PYTHON_LIBRARIES:     ${PYTHON_LIBRARIES}")
 message("PYTHON_LIBRARY_DIRS:  ${PYTHON_LIBRARY_DIRS}")
+message("PYTHON_INCLUDE_DIRS:  ${PYTHON_INCLUDE_DIRS}")
+message("NUMPY_INCLUDE_DIRS:   ${NUMPY_INCLUDE_DIRS}")
 message("")
 message("========== Jansson ==================")
 message("JANSSON_INCLUDE_DIRS: ${JANSSON_INCLUDE_DIRS}")
