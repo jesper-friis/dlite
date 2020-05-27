@@ -36,7 +36,9 @@ jobs:
         pip install psycopg2
     - name: test numpy
       run: |
-        python3 -c 'import numpy as np; print(np.get_include())'
+        python --version
+        python3 --version
+        python -c 'import numpy as np; print(np.get_include())'
     - name: configure
       run: |
         mkdir build
