@@ -20,15 +20,20 @@ jobs:
       run: |
         sudo apt-get install libjansson-dev
         sudo apt-get install libhdf5-dev
-        sudo apt-get install python3-dev
-        sudo apt-get install python3-numpy-dev
-        sudo apt-get install python3-numpy
-        sudo apt-get install python3-pip
-        sudo apt-get install python3-yaml
-        sudo apt-get install python3-psycopg2
+        #sudo apt-get install python3-dev
+        #sudo apt-get install python3-numpy-dev
+        #sudo apt-get install python3-numpy
+        #sudo apt-get install python3-pip
+        #sudo apt-get install python3-yaml
+        #sudo apt-get install python3-psycopg2
         sudo apt-get install swig3.0
         sudo apt-get install doxygen
         sudo apt-get install graphviz
+    - name: Install Python dependencies
+      run: |
+        pip install numpy
+        pip install PyYAML
+        pip install psycopg2
     - name: test numpy
       run: |
         python3 -c 'import numpy as np; print(np.get_include())'
