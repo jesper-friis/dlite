@@ -235,12 +235,12 @@ if(WITH_PYTHON)
     else()
       message("*** cmake >= 3.14.7")
       # NumPy seems not to be supported on Ubuntu in Github Actions
-      find_package(Python3 REQUIRED COMPONENTS Interpreter Development NumPy)
-      set(NUMPY_INCLUDE_DIR ${Python3_NumPy_INCLUDE_DIRS})
+      #find_package(Python3 REQUIRED COMPONENTS Interpreter Development NumPy)
+      #set(NUMPY_INCLUDE_DIR ${Python3_NumPy_INCLUDE_DIRS})
 
-      #find_package(Python3 REQUIRED COMPONENTS Interpreter Development)
-      #set(PYTHON_EXECUTABLE ${Python3_EXECUTABLE})
-      #find_package(NumPy REQUIRED)
+      find_package(Python3 REQUIRED COMPONENTS Interpreter Development)
+      set(PYTHON_EXECUTABLE ${Python3_EXECUTABLE})
+      find_package(NumPy REQUIRED)
     endif()
 
     #message("*** Python3_NumPy_INCLUDE_DIR: ${Python3_NumPy_INCLUDE_DIR}")
