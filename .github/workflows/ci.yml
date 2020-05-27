@@ -31,14 +31,14 @@ jobs:
         sudo apt-get install graphviz
     - name: Install Python dependencies
       run: |
-        pip install numpy
-        pip install PyYAML
-        pip install psycopg2
+        pip3 install numpy
+        pip3 install PyYAML
+        pip3 install psycopg2
     - name: test numpy
       run: |
         python --version
         python3 --version
-        python -c 'import numpy as np; print(np.get_include())'
+        python3 -c 'import numpy as np; print(np.get_include())'
     - name: configure
       run: |
         mkdir build
