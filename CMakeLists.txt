@@ -227,41 +227,49 @@ if(WITH_PYTHON)
     find_package(PythonInterp 3.5 REQUIRED)
     find_package(PythonLibs 3.5 REQUIRED)
   else()
-    if(CMAKE_VERSION VERSION_LESS 3.14)
-      message("*** cmake < 3.14")
+    if(CMAKE_VERSION VERSION_LESS 3.14.7)
+      message("*** cmake < 3.14.7")
       find_package(Python3 REQUIRED COMPONENTS Interpreter Development)
       set(PYTHON_EXECUTABLE ${Python3_EXECUTABLE})
-      find_package(Numpy REQUIRED)
+      find_package(NumPy REQUIRED)
     else()
-      message("*** cmake >= 3.14")
+      message("*** cmake >= 3.14.7")
       find_package(Python3 REQUIRED COMPONENTS Interpreter Development NumPy)
+
+      # NumPy seems not to be detected on Ubuntu in Github Actions
+      if(NOT Python3_NumPy_INCLUDE_DIRS)
+        find_package(NumPy REQUIRED)
+      else()
+        set(NUMPY_INCLUDE_DIR     ${Python3_NumPy_INCLUDE_DIRS})
+      endif()
+
     endif()
 
-    message("*** Python3_NumPy_INCLUDE_DIR: ${Python3_NumPy_INCLUDE_DIR}")
-
-    # Numpy seems not to be detected on Ubuntu in Github Actions
-    if(NOT Python3_NumPy_INCLUDE_DIR)
-      execute_process(
-        COMMAND ${PYTHON_EXECUTABLE}
-          -c "import numpy as np; print(np.get_include())"
-        OUTPUT_VARIABLE Python3_NumPy_INCLUDE_DIR
-        )
-    endif()
-
-    message("*** Python3_EXECUTABLE: ${Python3_EXECUTABLE}")
-    message("*** _Python3_EXECUTABLE: ${_Python3_EXECUTABLE}\n")
-
-    message("*** Python3_INCLUDE_DIR: ${Python3_INCLUDE_DIR}")
-    message("*** _Python3_INCLUDE_DIR: ${_Python3_INCLUDE_DIR}\n")
-
-    message("*** Python3_LIBRARY_DEBUG: ${Python3_LIBRARY_DEBUG}")
-    message("*** _Python3_LIBRARY_DEBUG: ${_Python3_LIBRARY_DEBUG}\n")
-
-    message("*** Python3_LIBRARY_RELEASE: ${Python3_LIBRARY_RELEASE}")
-    message("*** _Python3_LIBRARY_RELEASE: ${_Python3_LIBRARY_RELEASE}\n")
-
-    message("*** Python3_NumPy_INCLUDE_DIR: ${Python3_NumPy_INCLUDE_DIR}")
-    message("*** _Python3_NumPy_INCLUDE_DIR: ${_Python3_NumPy_INCLUDE_DIR}\n")
+    #message("*** Python3_NumPy_INCLUDE_DIR: ${Python3_NumPy_INCLUDE_DIR}")
+    #
+    ## NumPy seems not to be detected on Ubuntu in Github Actions
+    #if(NOT Python3_NumPy_INCLUDE_DIR)
+    #  execute_process(
+    #    COMMAND ${PYTHON_EXECUTABLE}
+    #      -c "import numpy as np; print(np.get_include())"
+    #    OUTPUT_VARIABLE Python3_NumPy_INCLUDE_DIR
+    #    )
+    #endif()
+    #
+    #message("*** Python3_EXECUTABLE: ${Python3_EXECUTABLE}")
+    #message("*** _Python3_EXECUTABLE: ${_Python3_EXECUTABLE}\n")
+    #
+    #message("*** Python3_INCLUDE_DIR: ${Python3_INCLUDE_DIR}")
+    #message("*** _Python3_INCLUDE_DIR: ${_Python3_INCLUDE_DIR}\n")
+    #
+    #message("*** Python3_LIBRARY_DEBUG: ${Python3_LIBRARY_DEBUG}")
+    #message("*** _Python3_LIBRARY_DEBUG: ${_Python3_LIBRARY_DEBUG}\n")
+    #
+    #message("*** Python3_LIBRARY_RELEASE: ${Python3_LIBRARY_RELEASE}")
+    #message("*** _Python3_LIBRARY_RELEASE: ${_Python3_LIBRARY_RELEASE}\n")
+    #
+    #message("*** Python3_NumPy_INCLUDE_DIR: ${Python3_NumPy_INCLUDE_DIR}")
+    #message("*** _Python3_NumPy_INCLUDE_DIR: ${_Python3_NumPy_INCLUDE_DIR}\n")
 
 
     # Set backward compatible Python variables
@@ -277,7 +285,6 @@ if(WITH_PYTHON)
     set(PYTHON_LIBRARIES      ${Python3_LIBRARIES})
     set(PYTHON_LIBRARY_DIRS   ${Python3_LIBRARY_DIRS})
     set(PYTHON_INCLUDE_DIRS   ${Python3_INCLUDE_DIRS})
-    set(NUMPY_INCLUDE_DIRS    ${Python3_NumPy_INCLUDE_DIRS})
     set(PYTHONLIBS_VERSION_STRING ${Python3_VERSION})
   endif()
 endif()
@@ -473,7 +480,7 @@ message("========== Python ==================")
 message("PYTHON_LIBRARIES:     ${PYTHON_LIBRARIES}")
 message("PYTHON_LIBRARY_DIRS:  ${PYTHON_LIBRARY_DIRS}")
 message("PYTHON_INCLUDE_DIRS:  ${PYTHON_INCLUDE_DIRS}")
-message("NUMPY_INCLUDE_DIRS:   ${NUMPY_INCLUDE_DIRS}")
+message("NUMPY_INCLUDE_DIR:    ${NUMPY_INCLUDE_DIR}")
 message("")
 message("========== Jansson ==================")
 message("JANSSON_INCLUDE_DIRS: ${JANSSON_INCLUDE_DIRS}")

@@ -2,7 +2,7 @@
 #
 # This module defines:
 #   NUMPY_INCLUDE_DIR    include path for arrayobject.h
-#   NUMPY_VERSION        numpy version string
+#   NUMPY_VERSION        NumPy version string
 #   NUMPY_FOUND          whether NumPy headers are found
 #
 # We assume that you include
