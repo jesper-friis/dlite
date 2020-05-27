@@ -31,10 +31,11 @@ jobs:
         sudo apt-get install graphviz
     - name: Install Python dependencies
       run: |
+        pip3 install setuptools
         pip3 install numpy
         pip3 install PyYAML
         pip3 install psycopg2
-    - name: test numpy
+    - name: check numpy
       run: |
         python --version
         python3 --version
